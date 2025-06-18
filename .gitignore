@@ -161,3 +161,6 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 .idea/
 .DS_Store
+
+# Ignoring the files created when executing the commands in patchright_workflow.yml locally
+playwright-python/
