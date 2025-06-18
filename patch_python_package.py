@@ -19,14 +19,14 @@ with open("playwright-python/playwright/_repo_version.py", "w") as f:
 with open("playwright-python/pyproject.toml", "r") as f:
     pyproject_source = toml.load(f)
 
-    pyproject_source["project"]["name"] = "patchright"
-    pyproject_source["project"]["description"] = "Undetected Python version of the Playwright testing and automation library."
-    pyproject_source["project"]["authors"] = [{'name': 'Microsoft Corporation, patched by github.com/Kaliiiiiiiiii-Vinyzu/'}]
+    pyproject_source["project"]["name"] = "re-patchright"
+    pyproject_source["project"]["description"] = "Undetected Python version of the Playwright testing and automation library tweaked for a specific logic."
+    pyproject_source["project"]["authors"] = [{'name': 'Microsoft Corporation, patched by github.com/Kaliiiiiiiiii-Vinyzu/ and tweaked by github.com/imamousenotacat/ '}]
 
-    pyproject_source["project"]["urls"]["homepage"] = "https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-python"
-    pyproject_source["project"]["urls"]["Release notes"] = "https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-python/releases"
-    pyproject_source["project"]["urls"]["Bug Reports"] = "https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-python/issues"
-    pyproject_source["project"]["urls"]["homeSource Codepage"] = "https://github.com/Kaliiiiiiiiii-Vinyzu/patchright-python"
+    pyproject_source["project"]["urls"]["homepage"] = "https://github.com/imamousenotacat/re-patchright-python"
+    pyproject_source["project"]["urls"]["Release notes"] = "https://github.com/imamousenotacat/re-patchright-python/releases"
+    pyproject_source["project"]["urls"]["Bug Reports"] = "https://github.com/imamousenotacat/re-patchright-python/issues"
+    pyproject_source["project"]["urls"]["homeSource Codepage"] = "https://github.com/imamousenotacat/re-patchright-python"
 
     del pyproject_source["project"]["scripts"]["playwright"]
     pyproject_source["project"]["scripts"]["patchright"] = "patchright.__main__:main"
@@ -54,7 +54,7 @@ with open("playwright-python/setup.py") as f:
             if node.targets[0].id == "url" and node.value.value == "https://playwright.azureedge.net/builds/driver/":
                 node.value = ast.JoinedStr(
                     values=[
-                        ast.Constant(value='https://github.com/Kaliiiiiiiiii-Vinyzu/patchright/releases/download/v'),
+                        ast.Constant(value='https://github.com/imamousenotacat/re-patchright/releases/download/v'),
                         ast.FormattedValue(value=ast.Name(id='driver_version', ctx=ast.Load()), conversion=-1),
                         ast.Constant(value='/')
                     ]
