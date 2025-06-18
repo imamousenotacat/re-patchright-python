@@ -55,7 +55,7 @@ jobs:
 
       - name: Install Playwright Browsers
         run: |
-          python -m re-patchright install --with-deps chromium
+          python -m patchright install --with-deps chromium
 
       - name: Clone Playwright-Python Tests
         run: |
