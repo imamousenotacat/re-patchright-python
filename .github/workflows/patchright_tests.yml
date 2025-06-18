@@ -51,11 +51,11 @@ jobs:
       - name: Install Local Patchright Package
         run: |
           cd playwright-python
-          pip install dist/patchright-*-manylinux1_x86_64.whl
+          pip install dist/re_patchright-*-manylinux1_x86_64.whl
 
       - name: Install Playwright Browsers
         run: |
-          python -m patchright install --with-deps chromium
+          python -m re-patchright install --with-deps chromium
 
       - name: Clone Playwright-Python Tests
         run: |
