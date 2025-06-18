@@ -29,14 +29,34 @@ with open("playwright-python/pyproject.toml", "r") as f:
     pyproject_source["project"]["urls"]["homeSource Codepage"] = "https://github.com/imamousenotacat/re-patchright-python"
 
     del pyproject_source["project"]["scripts"]["playwright"]
-    pyproject_source["project"]["scripts"]["patchright"] = "patchright.__main__:main"
+    pyproject_source["project"]["scripts"]["re-patchright"] = "patchright.__main__:main"
     pyproject_source["project"]["entry-points"]["pyinstaller40"]["hook-dirs"] = "patchright._impl.__pyinstaller:get_hook_dirs"
 
-    pyproject_source["tool"]["setuptools"]["packages"] = ['patchright', 'patchright.async_api', 'patchright.sync_api', 'patchright._impl', 'patchright._impl.__pyinstaller']
+    # Ensure 're_patchright' shim package is included for `python -m re-patchright`
+    pyproject_source["tool"]["setuptools"]["packages"] = ['patchright', 'patchright.async_api', 'patchright.sync_api', 'patchright._impl', 'patchright._impl.__pyinstaller', 're_patchright']
     pyproject_source["tool"]["setuptools_scm"] = {'version_file': 'patchright/_repo_version.py'}
 
     with open("playwright-python/pyproject.toml", "w") as f:
         toml.dump(pyproject_source, f)
+
+# TODO: This little shim module work just for `python -m re_patchright` redirecting the call to patchright ...
+#       I guess it could be expanded in the future but my idea is using patchright imports ...
+shim_package_dir = "playwright-python/re_patchright"
+os.makedirs(shim_package_dir, exist_ok=True)
+
+with open(os.path.join(shim_package_dir, "__init__.py"), "w") as f:
+    f.write("# This package provides a shim for `python -m re-patchright` to call `patchright`.\n")
+
+shim_main_content = """\
+# re_patchright/__main__.py
+import sys
+from patchright.__main__ import main
+
+if __name__ == "__main__":
+    sys.exit(main())
+"""
+with open(os.path.join(shim_package_dir, "__main__.py"), "w") as f:
+    f.write(shim_main_content)
 
 # Patching setup.py
 with open("playwright-python/setup.py") as f:
