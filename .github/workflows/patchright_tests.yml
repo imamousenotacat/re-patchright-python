@@ -1,0 +1,71 @@
+name: Patchright Chromium Tests
+
+on:
+  # enabling manual trigger
+  workflow_dispatch:
+#  push:
+#    branches: [main]
+#  pull_request:
+#    branches: [main]
+
+jobs:
+  run-playwright-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+
+      - name: Install Playwright-Python Package
+        run: |
+          git clone https://github.com/microsoft/playwright-python --branch v1.51.0
+          cd playwright-python
+          python -m pip install --upgrade pip
+          pip install -r local-requirements.txt
+          pip install -e .
+          pip install black toml
+
+      - name: Patch Playwright-Python Package
+        run: |
+          python patch_python_package.py
+          python -m black playwright-python
+
+      - name: Build Patchright-Python Package
+        run: |
+          cd playwright-python
+          pip install -e .
+          for wheel in $(python setup.py --list-wheels); do
+            PLAYWRIGHT_TARGET_WHEEL=$wheel python -m build --wheel
+          done
+
+      - name: Install Local Patchright Package
+        run: |
+          cd playwright-python
+          pip install dist/re_patchright-*-manylinux1_x86_64.whl
+
+      - name: Install Playwright Browsers
+        run: |
+          python -m re_patchright install --with-deps chromium
+
+      - name: Clone Playwright-Python Tests
+        run: |
+          cp -r playwright-python/tests ./tests
+
+      - name: Modify Tests
+        run: |
+          python utils/modify_tests.py
+
+      - name: Run Chromium Tests
+        run: |
+          xvfb-run pytest --browser=chromium --disable-warnings --timeout 90 tests/sync/
+          xvfb-run pytest --browser=chromium --disable-warnings --timeout 90 tests/async/
