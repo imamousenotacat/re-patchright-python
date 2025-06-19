@@ -1,0 +1,13 @@
+# Only for test Runs
+[tool.pytest.ini_options]
+addopts = "-Wall -rsx" #  -s
+markers = [
+    "skip_browser",
+    "only_browser",
+    "skip_platform",
+    "only_platform"
+]
+junit_family = "xunit2"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
