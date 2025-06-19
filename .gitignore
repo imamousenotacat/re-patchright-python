@@ -167,3 +167,4 @@ cython_debug/
 
 # Ignoring the files created when executing the commands in patchright_workflow.yml locally
 playwright-python/
+
