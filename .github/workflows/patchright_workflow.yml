@@ -92,7 +92,7 @@ jobs:
           tag_name: "v1.52.7"
           release_name: "v1.52.7"
           body: |
-            This is an manual deployment.
+            This is a manual deployment.
             This Release is only used for Versioning.
           draft: false
           prerelease: false
