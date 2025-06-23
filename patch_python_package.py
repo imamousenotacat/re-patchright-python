@@ -4,8 +4,8 @@ import os
 
 import toml
 
-patchright_version = os.environ.get('playwright_version')
-patchright_version = "1.52.7"
+# patchright_version = os.environ.get('playwright_version')
+patchright_version = "1.52.8"
 
 def patch_file(file_path: str, patched_tree: ast.AST) -> None:
     with open(file_path, "w") as f:
@@ -67,7 +67,7 @@ with open("playwright-python/setup.py") as f:
         # Modify driver_version
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant) and isinstance(node.targets[0], ast.Name):
             if node.targets[0].id == "driver_version" and node.value.value.startswith("1."):
-                node.value.value = node.value.value.split("-")[0]
+                node.value.value = patchright_version # more straightforward ...
 
         # Modify url
         if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant) and isinstance(node.targets[0], ast.Name):

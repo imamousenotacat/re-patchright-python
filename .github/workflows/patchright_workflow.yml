@@ -6,7 +6,7 @@ on:
     inputs:
       version:
         description: 'Playwright Version'
-        default: 'v1.52.0'
+        default: 'v1.52.8'
   # running every hour
 #  schedule:
 #    - cron: '48 * * * *'
@@ -61,7 +61,7 @@ jobs:
       - name: Install Playwright-Python Package
         if: steps.version_check.outputs.proceed == 'true'
         run: |
-          git clone https://github.com/microsoft/playwright-python  --branch ${{ env.playwright_version }}
+          git clone https://github.com/microsoft/playwright-python --branch v1.52.0
           cd playwright-python
           python -m pip install --upgrade pip
           pip install -r local-requirements.txt
@@ -87,10 +87,8 @@ jobs:
         if: steps.version_check.outputs.proceed == 'true'
         uses: actions/create-release@v1
         with:
-#          tag_name: ${{ env.playwright_version }}
-#          release_name: ${{ env.playwright_version }}
-          tag_name: "v1.52.7"
-          release_name: "v1.52.7"
+          tag_name: ${{ env.playwright_version }}
+          release_name: ${{ env.playwright_version }}
           body: |
             This is a manual deployment.
             This Release is only used for Versioning.
