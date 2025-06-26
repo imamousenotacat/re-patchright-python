@@ -5,7 +5,7 @@ import os
 import toml
 
 # patchright_version = os.environ.get('playwright_version')
-patchright_version = "1.52.9"
+patchright_version = "1.52.10"
 
 def patch_file(file_path: str, patched_tree: ast.AST) -> None:
     with open(file_path, "w") as f:
