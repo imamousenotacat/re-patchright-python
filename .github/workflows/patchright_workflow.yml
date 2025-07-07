@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Playwright Version'
-        default: 'v1.51.0'
+        description: 'Generated Artifacts Version'
+        default: 'v1.51.4'
   # running every hour
 #  schedule:
 #    - cron: '48 * * * *'
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -61,7 +61,7 @@ jobs:
       - name: Install Playwright-Python Package
         if: steps.version_check.outputs.proceed == 'true'
         run: |
-          git clone https://github.com/microsoft/playwright-python  --branch ${{ env.playwright_version }}
+          git clone https://github.com/microsoft/playwright-python  --branch v1.51.0
           cd playwright-python
           python -m pip install --upgrade pip
           pip install -r local-requirements.txt
@@ -90,7 +90,7 @@ jobs:
           tag_name: ${{ env.playwright_version }}
           release_name: ${{ env.playwright_version }}
           body: |
-            This is an automatic deployment in response to a new release of [microsoft/playwright-python](https://github.com/microsoft/playwright-python).
+            This is a manual deployment.
             This Release is only used for Versioning.
           draft: false
           prerelease: false
@@ -100,5 +100,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: playwright-python/dist/
-          repository-url: https://test.pypi.org/legacy/
           verbose: true
